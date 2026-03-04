@@ -1,0 +1,12 @@
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/bin/Debug/net10.0/MusicLibrary.ServiceDefaults.deps.json
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/bin/Debug/net10.0/MusicLibrary.ServiceDefaults.dll
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/bin/Debug/net10.0/MusicLibrary.ServiceDefaults.pdb
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/MusicLibrary.ServiceDefaults.csproj.AssemblyReference.cache
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/MusicLibrary.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/MusicLibrary.ServiceDefaults.AssemblyInfoInputs.cache
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/MusicLibrary.ServiceDefaults.AssemblyInfo.cs
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/MusicLibrary.ServiceDefaults.csproj.CoreCompileInputs.cache
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/MusicLibrary.ServiceDefaults.dll
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/refint/MusicLibrary.ServiceDefaults.dll
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/MusicLibrary.ServiceDefaults.pdb
+/home/sam/dev/MusicLibrary/MusicLibrary.ServiceDefaults/obj/Debug/net10.0/ref/MusicLibrary.ServiceDefaults.dll
