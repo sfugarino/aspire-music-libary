@@ -47,6 +47,7 @@ public class Endpoint : Endpoint<Request, Response>
             {
                 Id = artist.Id?.ToString() ?? string.Empty,
                 Name = artist.Name,
+                Genres = [.. artist.Genres],
                 Bio = artist.Bio,
                 Origin = artist.Origin,
                 Image = artist.Image,

@@ -10,64 +10,75 @@ namespace MusicLibrary.ApiService.Schemas;
 /// </summary>
 public class Artist
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
+
     /// <summary>
     /// Gets or sets the unique identifier for the artist.
     /// </summary>
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
-    [BsonElement("name")]
+
     /// <summary>
     /// Gets or sets the name of the artist.
     /// </summary>
+    [BsonElement("name")]
     public required string Name { get; set; }
 
-    [BsonElement("bio")]
+
     /// <summary>
     /// Gets or sets the biography of the artist.
     /// </summary>
+    [BsonElement("bio")]
     public string? Bio { get; set; }
 
-    [BsonElement("origin")]
+
     /// <summary>
     /// Gets or sets the origin of the artist.
     /// </summary>
+    [BsonElement("origin")]
     public string? Origin { get; set; }
 
-    [BsonElement("image")]
+
     /// <summary>
     /// Gets or sets the image URL of the artist.
     /// </summary>
+    [BsonElement("image")]
     public string? Image { get; set; }
 
-    [BsonElement("birthDate")]
+
     /// <summary>
     /// Gets or sets the birth date of the artist.
     /// </summary>
+    [BsonElement("birthDate")]
     public DateOnly? BirthDay { get; set; }
 
-    [BsonElement("genreIds")]
+
     /// <summary>
     /// Gets or sets the list of genre IDs associated with the artist.
     /// </summary>
-    public List<ObjectId> GenreIds { get; set; } = [];
+    [BsonElement("genres")]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public List<string> Genres { get; set; } = [];
 
-    [BsonElement("createdAt")]
+
     /// <summary>
     /// Gets or sets the creation date of the artist record.
     /// </summary>
+    [BsonElement("createdAt")]
     public DateTime CreatedAt { get; set; }
 
-    [BsonElement("updatedAt")]
+
     /// <summary>
     /// Gets or sets the last update date of the artist record.
     /// </summary>
+    [BsonElement("updatedAt")]
     public DateTime UpdatedAt { get; set; }
 
-    [BsonElement("isActive")]
+
     /// <summary>
     /// Gets or sets a value indicating whether the artist is active.
     /// </summary>
+    [BsonElement("isActive")]
     public bool IsActive { get; set; } = true;
 }

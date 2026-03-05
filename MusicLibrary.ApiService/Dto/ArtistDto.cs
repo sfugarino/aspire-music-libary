@@ -34,4 +34,9 @@ public class ArtistDto
     /// Gets or sets the birth date of the artist.
     /// </summary>
     public DateOnly? BirthDay { get; set; }
+
+    /// <summary>
+    /// Gets or sets the genre IDs associated with the artist.
+    /// </summary>
+    public string[]Genres { get; set; } = [];
 }

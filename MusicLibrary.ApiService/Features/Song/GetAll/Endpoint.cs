@@ -46,13 +46,12 @@ public class Endpoint : EndpointWithoutRequest<Response>
             {
                 return new SongDto { 
                     Id = s.Id?.ToString() ?? string.Empty, 
-                    Title = s.Title, AlbumId = s.AlbumId, 
-                    ArtistId = s.ArtistId, 
-                    TrackNumber = s.TrackNumber, 
+                    Title = s.Title,  
+                    Artists = [.. s.Artists], 
+                    Genres = [.. s.Genres],   
                     Duration = s.Duration, 
                     AudioFile = s.AudioFile,
                     Lyrics = s.Lyrics,
-                    ArtistName = s.ArtistName 
                 };
             });
 

@@ -48,6 +48,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
                 {
                     Id = a.Id?.ToString() ?? string.Empty,
                     Name = a.Name,
+                    Genres = [.. a.Genres],
                     Bio = a.Bio,
                     Origin = a.Origin,
                     Image = a.Image,

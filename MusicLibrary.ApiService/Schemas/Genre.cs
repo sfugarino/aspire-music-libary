@@ -9,40 +9,46 @@ namespace MusicLibrary.ApiService.Schemas;
 /// </summary>
 public class Genre
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
+
     /// <summary>
     /// Gets or sets the unique identifier for the genre.
     /// </summary>
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
-    [BsonElement("name")]
+
     /// <summary>
     /// Gets or sets the name of the genre.
     /// </summary>
+    [BsonElement("name")]
     public required string Name { get; set; }
 
-    [BsonElement("description")]
+
     /// <summary>
     /// Gets or sets the description of the genre.
     /// </summary>
+    [BsonElement("description")]
     public string? Description { get; set; }
 
-    [BsonElement("createdAt")]
+
     /// <summary>
     /// Gets or sets the creation date of the genre record.
     /// </summary>
+    [BsonElement("createdAt")]
     public DateTime CreatedAt { get; set; }
 
-    [BsonElement("updatedAt")]
+
     /// <summary>
     /// Gets or sets the last update date of the genre record.
     /// </summary>
+    [BsonElement("updatedAt")]
     public DateTime UpdatedAt { get; set; }
 
-    [BsonElement("isActive")]
+
     /// <summary>
     /// Gets or sets a value indicating whether the genre is active.
     /// </summary>
+    [BsonElement("isActive")]
     public bool IsActive { get; set; } = true;
 }

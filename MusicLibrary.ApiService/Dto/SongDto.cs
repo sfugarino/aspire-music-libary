@@ -18,17 +18,17 @@ public class SongDto
     /// <summary>
     /// Gets or sets the album ID for the song.
     /// </summary>
-    public string? AlbumId { get; set; }
+    public string[] Albums { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the artist ID for the song.
     /// </summary>
-    public string? ArtistId { get; set; }
+    public string[] Artists { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets the artist name for the song.
+    /// Gets or sets the genre IDs associated with the song.
     /// </summary>
-    public string? ArtistName { get; set; }
+    public string[] Genres { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the track number of the song in the album.
