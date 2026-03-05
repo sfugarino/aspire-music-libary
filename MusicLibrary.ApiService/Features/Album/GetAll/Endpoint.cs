@@ -10,17 +10,17 @@ namespace MusicLibrary.ApiService.Features.Album.GetAll;
 /// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly IAlbumRepository _albumRepository;
+    private readonly IAlbumService _albumService;
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="albumRepository">The album repository dependency.</param>
+    /// <param name="albumService">The album service dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IAlbumRepository albumRepository, ILogger<Endpoint> logger)
+    public Endpoint(IAlbumService albumService, ILogger<Endpoint> logger)
     {
-        _albumRepository = albumRepository;
+        _albumService = albumService;
         _logger = logger;
     }
 
@@ -41,24 +41,10 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var albums = await _albumRepository.GetAllAsync(ct);
-            var albumDtos = albums.Select(static a => 
-            {
-                return new AlbumDto 
-                {   
-                    Id = a.Id?.ToString() ?? string.Empty,
-                    Title = a.Title,
-                    Tracks = [.. a.Songs],
-                    Genres = [.. a.Genres],
-                    CoverImage = a.CoverImage,
-                    ReleaseYear = a.ReleaseYear,
-                    RecordLabel = a.RecordLabel
-                };
-            });
-
+            var albums = await _albumService.GetAllAlbumsAsync(ct);
             var response = new Response
             {
-                Albums = [.. albumDtos]
+                Albums = [.. albums]
             };
 
             await Send.OkAsync(response, cancellation: ct);

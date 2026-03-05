@@ -5,6 +5,7 @@ using MusicLibrary.ApiService.Data;
 using MusicLibrary.ApiService.Exceptions;
 using MusicLibrary.ApiService.Interfaces;
 using MusicLibrary.ApiService.Schemas;
+using MusicLibrary.ApiService.Services;
 
 namespace MusicLibrary.ApiService.Extensions;
 
@@ -46,6 +47,11 @@ public static class MusicLibraryBuilderExtensions
         builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
         builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
         builder.Services.AddScoped<ISongRepository, SongRepository>();
+
+        builder.Services.AddScoped<IArtistsService, ArtistsService>();
+        builder.Services.AddScoped<IGenreService, GenreService>();
+        builder.Services.AddScoped<IAlbumService, AlbumService>();
+        builder.Services.AddScoped<ISongService, SongService>();
 
         // OpenAPI and FastEndpoints
         builder.Services.AddOpenApi();

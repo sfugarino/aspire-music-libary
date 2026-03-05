@@ -75,6 +75,27 @@ public class MongoRepository<T> : IMongoRepository<T> where T : class
     }
 
     /// <summary>
+    /// Finds entities in the collection matching the given filter expression.
+    /// </summary>
+    /// <param name="filter">A filter expression for the query.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>List of matching entities.</returns>
+    public async Task<List<T>> FindAsync(FilterDefinition<T> filter, CancellationToken ct)
+    {
+        try
+        {
+            var result = await _collection.Find(filter).ToListAsync(ct);
+            _logger.LogInformation("Found {Count} documents of type {EntityType} in collection {CollectionName} with filter.", result.Count, typeof(T).Name, _collection.CollectionNamespace.CollectionName);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error finding documents of type {EntityType} in collection {CollectionName} with filter.", typeof(T).Name, _collection.CollectionNamespace.CollectionName);
+            throw;
+        }
+    }
+
+    /// <summary>
     /// Adds a new entity to the collection asynchronously.
     /// </summary>
     /// <param name="entity">The entity to add.</param>

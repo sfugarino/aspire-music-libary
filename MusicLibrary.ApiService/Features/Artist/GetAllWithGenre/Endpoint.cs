@@ -3,7 +3,7 @@ using MusicLibrary.ApiService.Dto;
 using MusicLibrary.ApiService.Interfaces;
 using MusicLibrary.ApiService.Schemas;
 
-namespace MusicLibrary.ApiService.Features.Artist.GetAll;
+namespace MusicLibrary.ApiService.Features.Artist.GetAllWithGenre;
 
 /// <summary>
 /// FastEndpoints endpoint for retrieving all artists.
@@ -29,7 +29,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
     /// </summary>
     public override void Configure()
     {
-        Get("/api/artists");
+        Get("/api/artists/with-genres");
         AllowAnonymous();
     }
 
@@ -41,7 +41,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var artists = await _artistsService.GetArtistsAsync(ct);
+            var artists = await _artistsService.GetArtistsWithGenresAsync(ct);
             var response = new Response
             {
                 Artists = artists

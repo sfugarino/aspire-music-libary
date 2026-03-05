@@ -8,15 +8,12 @@ namespace MusicLibrary.ApiService.Data;
 /// <summary>
 /// Repository for managing Song entities in MongoDB.
 /// </summary>
-public class SongRepository : MongoRepository<Song>, ISongRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="SongRepository"/> class.
+/// </remarks>
+/// <param name="database">The MongoDB database instance.</param>
+/// <param name="logger">The logger instance for MongoRepository.</param>
+public class SongRepository(IMongoDatabase database, ILogger<SongRepository> logger) 
+    : MongoRepository<Song>(database, "songs", logger), ISongRepository
 {
-	/// <summary>
-	/// Initializes a new instance of the <see cref="SongRepository"/> class.
-	/// </summary>
-	/// <param name="database">The MongoDB database instance.</param>
-	/// <param name="logger">The logger instance for MongoRepository.</param>
-	public SongRepository(IMongoDatabase database, ILogger<SongRepository> logger)
-		: base(database, "songs", logger)
-	{
-	}
 }

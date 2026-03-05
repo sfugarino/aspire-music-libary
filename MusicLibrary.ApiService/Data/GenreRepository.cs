@@ -8,15 +8,12 @@ namespace MusicLibrary.ApiService.Data;
 /// <summary>
 /// Repository for managing Genre entities in MongoDB.
 /// </summary>
-public class GenreRepository : MongoRepository<Genre>, IGenreRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="GenreRepository"/> class.
+/// </remarks>
+/// <param name="database">The MongoDB database instance.</param>
+/// <param name="logger">The logger instance for MongoRepository.</param>
+public class GenreRepository(IMongoDatabase database, ILogger<GenreRepository> logger) 
+    : MongoRepository<Genre>(database, "genres", logger), IGenreRepository
 {
-	/// <summary>
-	/// Initializes a new instance of the <see cref="GenreRepository"/> class.
-	/// </summary>
-	/// <param name="database">The MongoDB database instance.</param>
-	/// <param name="logger">The logger instance for MongoRepository.</param>
-	public GenreRepository(IMongoDatabase database, ILogger<GenreRepository> logger)
-		: base(database, "genres", logger)
-	{
-	}
 }

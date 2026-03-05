@@ -10,17 +10,17 @@ namespace MusicLibrary.ApiService.Features.Song.GetAll;
 /// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly ISongRepository _songRepository;
+    private readonly ISongService _songService;
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="songRepository">The song repository dependency.</param>
+    /// <param name="songService">The song service dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(ISongRepository songRepository, ILogger<Endpoint> logger)
+    public Endpoint(ISongService songService, ILogger<Endpoint> logger)
     {
-        _songRepository = songRepository;
+        _songService = songService;
         _logger = logger;
     }
 
@@ -41,23 +41,11 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var songs = await _songRepository.GetAllAsync(ct);
-            var songDtos = songs.Select(static s =>
-            {
-                return new SongDto { 
-                    Id = s.Id?.ToString() ?? string.Empty, 
-                    Title = s.Title,  
-                    Artists = [.. s.Artists], 
-                    Genres = [.. s.Genres],   
-                    Duration = s.Duration, 
-                    AudioFile = s.AudioFile,
-                    Lyrics = s.Lyrics,
-                };
-            });
+            var songs = await _songService.GetAllSongsAsync(ct);
 
             await Send.OkAsync(new Response
             {
-                Songs = [.. songDtos]
+                Songs = [.. songs]
             }, cancellation: ct);
         }
         catch (Exception ex)

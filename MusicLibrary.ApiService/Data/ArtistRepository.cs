@@ -1,5 +1,8 @@
+using System.Reflection.Metadata.Ecma335;
+using MongoDB.Bson;
 using MongoDB.Driver;
-using MusicLibrary.ApiService.Config;
+using MongoDB.Driver.Linq;
+using MusicLibrary.ApiService.Dto;
 using MusicLibrary.ApiService.Interfaces;
 using MusicLibrary.ApiService.Schemas;
 
@@ -8,15 +11,23 @@ namespace MusicLibrary.ApiService.Data;
 /// <summary>
 /// Repository for managing Artist entities in MongoDB.
 /// </summary>
-public class ArtistRepository : MongoRepository<Artist>, IArtistRepository
+public class ArtistRepository(IMongoDatabase database, ILogger<ArtistRepository> logger) 
+    : MongoRepository<Artist>(database, "artists", logger), IArtistRepository
 {
-	/// <summary>
-	/// Initializes a new instance of the <see cref="ArtistRepository"/> class.
-	/// </summary>
-	/// <param name="database">The MongoDB database instance.</param>
-	/// <param name="logger">The logger instance for MongoRepository.</param>
-	public ArtistRepository(IMongoDatabase database, ILogger<ArtistRepository> logger)
-		: base(database, "artists", logger)
-	{
-	}
+    public async Task<Artist[]> GetArtistsWithGenresAsync(CancellationToken ct)
+    {
+        var artistCollection = _collection.AsQueryable();
+        var genreCollection = _collection.Database.GetCollection<Genre>("genres");
+
+        var result = await _collection.Aggregate()
+            .Lookup<Artist, Genre, Artist>(
+                genreCollection,
+                artist => artist.Genres,
+                genre => genre.Id,
+                final => final.GenreDetails)
+                .ToListAsync(ct);
+            
+
+        return [..result];
+    }
 }

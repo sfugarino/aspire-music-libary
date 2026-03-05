@@ -10,17 +10,17 @@ namespace MusicLibrary.ApiService.Features.Artist.GetById;
 /// </summary>
 public class Endpoint : Endpoint<Request, Response>
 {
-    private readonly IArtistRepository _artistRepository;
+    private readonly IArtistsService _artistsService;
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="artistRepository">The artist repository dependency.</param>
+    /// <param name="artistService">The artist repository dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IArtistRepository artistRepository, ILogger<Endpoint> logger)
+    public Endpoint(IArtistsService artistsService, ILogger<Endpoint> logger)
     {
-        _artistRepository = artistRepository;
+        _artistsService = artistsService;
         _logger = logger;
     }
 
@@ -42,21 +42,17 @@ public class Endpoint : Endpoint<Request, Response>
     {
         try
         {
-            var artist = await _artistRepository.GetByIdAsync(request.Id, ct);
-            var artistDto = new ArtistDto
+            var artist = await _artistsService.GetArtistsAsync(request.Id, ct);
+
+            if (artist == null)
             {
-                Id = artist.Id?.ToString() ?? string.Empty,
-                Name = artist.Name,
-                Genres = [.. artist.Genres],
-                Bio = artist.Bio,
-                Origin = artist.Origin,
-                Image = artist.Image,
-                BirthDay = artist.BirthDay
-            };
+                await Send.NotFoundAsync(ct);
+                return;
+            }
 
             var response = new Response
             {
-                Artists = artistDto
+                Artists = artist
             };
 
             await Send.OkAsync(response, cancellation: ct);

@@ -1,5 +1,6 @@
 using MusicLibrary.ApiService.Schemas;
 using MongoDB.Driver;
+using MusicLibrary.ApiService.Dto;
 
 namespace MusicLibrary.ApiService.Interfaces;
 
@@ -8,5 +9,5 @@ namespace MusicLibrary.ApiService.Interfaces;
 /// </summary>
 public interface IArtistRepository : IMongoRepository<Artist>
 {
-    // Add custom Artist-specific repository methods here if needed in the future.
+    Task<Artist[]> GetArtistsWithGenresAsync(CancellationToken ct);
 }

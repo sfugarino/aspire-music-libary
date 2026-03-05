@@ -10,17 +10,17 @@ namespace MusicLibrary.ApiService.Features.Genre.GetAll;
 /// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly IGenreRepository _genreRepository;
+    private readonly IGenreService _genreService;
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="genreRepository">The genre repository dependency.</param>
+    /// <param name="genreService">The genre service dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IGenreRepository genreRepository, ILogger<Endpoint> logger)
+    public Endpoint(IGenreService genreService, ILogger<Endpoint> logger)
     {
-        _genreRepository = genreRepository;
+        _genreService = genreService;
         _logger = logger;
     }
 
@@ -41,20 +41,11 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var genres = await _genreRepository.GetAllAsync(ct);
-            var genreDtos = genres.Select(static g => 
-            {
-                return new GenreDto 
-                { 
-                    Id = g.Id?.ToString() ?? string.Empty, 
-                    Name = g.Name, 
-                    Description = g.Description ?? string.Empty 
-                };
-            });
+            var genres = await _genreService.GetAllGenresAsync(ct);
 
             var response = new Response
             {
-                Genres = [.. genreDtos]
+                Genres = [.. genres]
             };
 
             await Send.OkAsync(response, cancellation: ct);

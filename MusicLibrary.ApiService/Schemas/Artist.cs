@@ -8,6 +8,7 @@ namespace MusicLibrary.ApiService.Schemas;
 /// <summary>
 /// Represents an artist in the music library.
 /// </summary>
+[BsonIgnoreExtraElements]
 public class Artist
 {
 
@@ -60,6 +61,11 @@ public class Artist
     [BsonElement("genres")]
     [BsonRepresentation(BsonType.ObjectId)]
     public List<string> Genres { get; set; } = [];
+
+    /// <summary>
+    /// Gets the detailed genre information associated with the artist.
+    /// </summary>
+    public IEnumerable<Genre> GenreDetails { get; set; } = [];
 
 
     /// <summary>

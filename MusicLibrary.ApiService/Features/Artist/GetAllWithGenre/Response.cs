@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MusicLibrary.ApiService.Dto;
 
-namespace MusicLibrary.ApiService.Features.Artist.GetAll;
+namespace MusicLibrary.ApiService.Features.Artist.GetAllWithGenre;
 
 /// <summary>
 /// Response model for retrieving all artists.
@@ -11,5 +11,5 @@ public class Response
     /// <summary>
     /// Gets or sets the list of artists returned by the endpoint.
     /// </summary>
-    public ArtistDto[] Artists { get; set; } = [];
+    public ArtistWithGenresDto[] Artists { get; set; } = [];
 }

@@ -1,4 +1,6 @@
 
+using MongoDB.Driver;
+
 namespace MusicLibrary.ApiService.Interfaces;
 /// <summary>
 /// Generic interface for MongoDB repository operations.
@@ -19,6 +21,14 @@ public interface IMongoRepository<T> where T : class
     /// <param name="ct">Cancellation token.</param>
     /// <returns>The entity if found; otherwise, null.</returns>
     Task<T> GetByIdAsync(string id, CancellationToken ct);
+
+    /// <summary>
+    /// Finds entities in the collection matching the given filter expression.
+    /// </summary>
+    /// <param name="filter">A filter expression for the query.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>List of matching entities.</returns>
+    Task<List<T>> FindAsync(FilterDefinition<T> filter, CancellationToken ct);
 
     /// <summary>
     /// Adds a new entity asynchronously.
