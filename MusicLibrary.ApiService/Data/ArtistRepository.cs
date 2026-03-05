@@ -4,6 +4,7 @@ using MusicLibrary.ApiService.Schemas;
 
 namespace MusicLibrary.ApiService.Data;
 
-public class ArtistRepository(IMongoDatabase database, DatabaseSettings dbSettings) : MongoRepository<Artist>(database, dbSettings.ArtistCollectionName)
+public class ArtistRepository(IMongoDatabase database) 
+: MongoRepository<Artist>(database, "artists")
 {
 }
