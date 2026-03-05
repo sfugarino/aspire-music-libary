@@ -5,35 +5,55 @@ using MusicLibrary.ApiService.Schemas;
 
 namespace MusicLibrary.ApiService.Features.Album.GetAll;
 
+/// <summary>
+/// FastEndpoints endpoint for retrieving all albums.
+/// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly IMongoRepository<Schemas.Album> _albumRepository;
+    private readonly IAlbumRepository _albumRepository;
+    private readonly ILogger<Endpoint> _logger;
 
-    public Endpoint(IMongoRepository<Schemas.Album> albumRepository)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Endpoint"/> class.
+    /// </summary>
+    /// <param name="albumRepository">The album repository dependency.</param>
+    /// <param name="logger">The logger instance.</param>
+    public Endpoint(IAlbumRepository albumRepository, ILogger<Endpoint> logger)
     {
         _albumRepository = albumRepository;
+        _logger = logger;
     }
 
+    /// <summary>
+    /// Configures the endpoint route and access.
+    /// </summary>
     public override void Configure()
     {
-        Get("/albums");
+        Get("/api/albums");
         AllowAnonymous();
     }
 
+    /// <summary>
+    /// Handles the GET request to retrieve all albums.
+    /// </summary>
+    /// <param name="ct">Cancellation token.</param>
     public override async Task HandleAsync(CancellationToken ct)
     {
         try
         {
             var albums = await _albumRepository.GetAllAsync(ct);
-            var albumDtos = albums.Select(a => new AlbumDto
+            var albumDtos = albums.Select(static a => 
             {
-                Id = a.Id?.ToString() ?? string.Empty,
-                Title = a.Title,
-                ArtistId = a.ArtistId,
-                ArtistName = a.ArtistName,
-                CoverImage = a.CoverImage,
-                ReleaseYear = a.ReleaseYear,
-                RecordLabel = a.RecordLabel
+                return new AlbumDto 
+                {   
+                    Id = a.Id?.ToString() ?? string.Empty,
+                    Title = a.Title,
+                    ArtistId = a.ArtistId,
+                    ArtistName = a.ArtistName,
+                    CoverImage = a.CoverImage,
+                    ReleaseYear = a.ReleaseYear,
+                    RecordLabel = a.RecordLabel
+                };
             });
 
             var response = new Response
@@ -43,8 +63,9 @@ public class Endpoint : EndpointWithoutRequest<Response>
 
             await Send.OkAsync(response, cancellation: ct);
         }
-        catch 
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Error retrieving albums");
             await Send.ErrorsAsync(StatusCodes.Status500InternalServerError, ct);
         }
     }

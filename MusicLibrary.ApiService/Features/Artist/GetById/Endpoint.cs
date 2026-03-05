@@ -3,12 +3,12 @@ using MusicLibrary.ApiService.Dto;
 using MusicLibrary.ApiService.Interfaces;
 using MusicLibrary.ApiService.Schemas;
 
-namespace MusicLibrary.ApiService.Features.Artist.GetAll;
+namespace MusicLibrary.ApiService.Features.Artist.GetById;
 
 /// <summary>
-/// FastEndpoints endpoint for retrieving all artists.
+/// FastEndpoints endpoint for retrieving an artist by ID.
 /// </summary>
-public class Endpoint : EndpointWithoutRequest<Response>
+public class Endpoint : Endpoint<Request, Response>
 {
     private readonly IArtistRepository _artistRepository;
     private readonly ILogger<Endpoint> _logger;
@@ -29,42 +29,40 @@ public class Endpoint : EndpointWithoutRequest<Response>
     /// </summary>
     public override void Configure()
     {
-        Get("/api/artists");
+        Get("/api/artists/{Id}");
         AllowAnonymous();
     }
 
     /// <summary>
-    /// Handles the GET request to retrieve all artists.
+    /// Handles the GET request to retrieve an artist by ID.
     /// </summary>
+    /// <param name="request">The request containing the artist ID.</param>
     /// <param name="ct">Cancellation token.</param>
-    public override async Task HandleAsync(CancellationToken ct)
+    public override async Task HandleAsync(Request request, CancellationToken ct)
     {
         try
         {
-            var artists = await _artistRepository.GetAllAsync(ct);
-            var artistDtos = artists.Select(a => 
+            var artist = await _artistRepository.GetByIdAsync(request.Id, ct);
+            var artistDto = new ArtistDto
             {
-                return new ArtistDto 
-                {
-                    Id = a.Id?.ToString() ?? string.Empty,
-                    Name = a.Name,
-                    Bio = a.Bio,
-                    Origin = a.Origin,
-                    Image = a.Image,
-                    BirthDay = a.BirthDay
-                };
-            });
+                Id = artist.Id?.ToString() ?? string.Empty,
+                Name = artist.Name,
+                Bio = artist.Bio,
+                Origin = artist.Origin,
+                Image = artist.Image,
+                BirthDay = artist.BirthDay
+            };
 
             var response = new Response
             {
-                Artists = [.. artistDtos]
+                Artists = artistDto
             };
 
             await Send.OkAsync(response, cancellation: ct);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving artists");
+            _logger.LogError(ex, "An error occurred while retrieving artist by ID: {ArtistId}", request.Id);
             await Send.ErrorsAsync(StatusCodes.Status500InternalServerError, ct);
         }
     }
