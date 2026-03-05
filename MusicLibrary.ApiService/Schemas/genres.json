@@ -1,0 +1,18 @@
+[
+  {
+    "_id": {"$oid":"65e6b1000000000000000101"},
+    "name": "Rock",
+    "description": "A genre of popular music that originated as 'rock and roll' in 1950s America.",
+    "createdAt": "1950-01-01T00:00:00Z",
+    "updatedAt": "2020-01-01T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "_id": {"$oid":"65e6b1000000000000000102"},
+    "name": "Jazz",
+    "description": "A music genre that originated in the African-American communities of New Orleans, United States.",
+    "createdAt": "1910-01-01T00:00:00Z",
+    "updatedAt": "2020-01-01T00:00:00Z",
+    "isActive": true
+  }
+]

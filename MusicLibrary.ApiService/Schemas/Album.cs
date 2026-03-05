@@ -36,10 +36,10 @@ public class Album
    /// <summary>
     /// Gets or sets list of artist who appear on albumn
     /// </summary>
-    [BsonElement("tracks")]
+    [BsonElement("songs")]
     [BsonRepresentation(BsonType.ObjectId)]
-    public List<string> Tracks { get; set; } = []; // rererenses Song
-    
+    public List<string> Songs { get; set; } = []; // rererenses Song
+
     /// <summary>
     /// Gets or sets the release year of the album.
     /// </summary>

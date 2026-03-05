@@ -1,0 +1,26 @@
+[
+  {
+    "_id": {"$oid":"65e6b1000000000000000001"},
+    "name": "The Beatles",
+    "bio": "The Beatles were an English rock band formed in Liverpool in 1960.",
+    "origin": "Liverpool, England",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fabs.JPG",
+    "birthDate": null,
+    "genres": [{"$oid":"65e6b1000000000000000101"}],
+    "createdAt": "1960-01-01T00:00:00Z",
+    "updatedAt": "1970-01-01T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "_id": {"$oid":"65e6b1000000000000000002"},
+    "name": "Miles Davis",
+    "bio": "Miles Dewey Davis III was an American jazz trumpeter, bandleader, and composer.",
+    "origin": "Alton, Illinois, U.S.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Miles_Davis_by_Palumbo.jpg",
+    "birthDate": "1926-05-26",
+    "genres": [{"$oid":"65e6b1000000000000000102"}],
+    "createdAt": "1944-01-01T00:00:00Z",
+    "updatedAt": "1991-09-28T00:00:00Z",
+    "isActive": true
+  }
+]
