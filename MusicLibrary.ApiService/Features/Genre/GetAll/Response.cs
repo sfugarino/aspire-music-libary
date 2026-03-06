@@ -1,4 +1,4 @@
-using MusicLibrary.ApiService.Dto;
+using MusicLibrary.Domain.Models;
 
 namespace MusicLibrary.ApiService.Features.Genre.GetAll;
 

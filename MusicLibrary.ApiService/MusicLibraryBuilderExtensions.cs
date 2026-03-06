@@ -1,11 +1,12 @@
 using FastEndpoints;
 using MongoDB.Driver;
 using MusicLibrary.ApiService.Config;
-using MusicLibrary.ApiService.Data;
+using MusicLibrary.Infrastructure.Persistence.Repositories;
 using MusicLibrary.ApiService.Exceptions;
-using MusicLibrary.ApiService.Interfaces;
-using MusicLibrary.ApiService.Schemas;
+using MusicLibrary.Domain.Interfaces.Persistence;
+using MusicLibrary.Domain.Interfaces.Services;
 using MusicLibrary.ApiService.Services;
+
 
 namespace MusicLibrary.ApiService.Extensions;
 

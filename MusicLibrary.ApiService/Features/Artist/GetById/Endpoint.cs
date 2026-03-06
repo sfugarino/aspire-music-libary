@@ -1,7 +1,7 @@
 using FastEndpoints;
-using MusicLibrary.ApiService.Dto;
-using MusicLibrary.ApiService.Interfaces;
-using MusicLibrary.ApiService.Schemas;
+using MusicLibrary.Domain.Models;
+using MusicLibrary.Domain.Interfaces.Services;
+using MusicLibrary.Domain.Schemas;
 
 namespace MusicLibrary.ApiService.Features.Artist.GetById;
 

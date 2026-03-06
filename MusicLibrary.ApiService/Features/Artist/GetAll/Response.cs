@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using MusicLibrary.ApiService.Dto;
+using MusicLibrary.Domain.Models;
 
 namespace MusicLibrary.ApiService.Features.Artist.GetAll;
 

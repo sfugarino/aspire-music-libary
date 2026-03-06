@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using MusicLibrary.ApiService.Interfaces;
-using MusicLibrary.ApiService.Schemas;
-using MusicLibrary.ApiService.Data;
-using MusicLibrary.ApiService.Dto;
+
+using MusicLibrary.Domain.Models;
+using MusicLibrary.Domain.Interfaces.Persistence;
+using MusicLibrary.Domain.Interfaces.Services;
 
 namespace MusicLibrary.ApiService.Services;
 

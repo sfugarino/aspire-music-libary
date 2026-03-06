@@ -1,9 +1,0 @@
-using MusicLibrary.ApiService.Dto;
-
-public interface IArtistsService
-{
-   Task<ArtistDto[]> GetArtistsAsync(CancellationToken ct);
-    Task<ArtistDto?> GetArtistsAsync(string id, CancellationToken ct);
-    Task<ArtistDto[]> GetArtistsByNameAsync(string name, CancellationToken ct);
-    Task<ArtistWithGenresDto[]> GetArtistsWithGenresAsync(CancellationToken ct);// Define methods for artist-related operations
-}   

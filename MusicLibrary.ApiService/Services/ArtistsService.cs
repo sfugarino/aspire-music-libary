@@ -1,7 +1,8 @@
 using MongoDB.Driver;
-using MusicLibrary.ApiService.Dto;
-using MusicLibrary.ApiService.Interfaces;
-using MusicLibrary.ApiService.Schemas;
+using MusicLibrary.Domain.Models;
+using MusicLibrary.Domain.Interfaces.Services;
+using MusicLibrary.Domain.Interfaces.Persistence;
+using MusicLibrary.Domain.Schemas;
 
 namespace MusicLibrary.ApiService.Services;
 

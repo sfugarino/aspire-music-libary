@@ -1,7 +1,6 @@
 using FastEndpoints;
-using MusicLibrary.ApiService.Dto;
-using MusicLibrary.ApiService.Interfaces;
-using MusicLibrary.ApiService.Schemas;
+using MusicLibrary.Domain.Interfaces.Services;
+
 
 namespace MusicLibrary.ApiService.Features.Song.GetAll;
 

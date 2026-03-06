@@ -1,9 +1,6 @@
-using MusicLibrary.ApiService.Dto;
-using MusicLibrary.ApiService.Interfaces;
-using MusicLibrary.ApiService.Schemas;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using MusicLibrary.Domain.Models;
+using MusicLibrary.Domain.Interfaces.Services;
+using MusicLibrary.Domain.Interfaces.Persistence;
 
 namespace MusicLibrary.ApiService.Services;
 

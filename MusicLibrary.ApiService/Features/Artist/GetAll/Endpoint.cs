@@ -1,7 +1,7 @@
 using FastEndpoints;
-using MusicLibrary.ApiService.Dto;
-using MusicLibrary.ApiService.Interfaces;
-using MusicLibrary.ApiService.Schemas;
+using MusicLibrary.Domain.Models;
+using MusicLibrary.Domain.Interfaces.Services;
+using MusicLibrary.Domain.Schemas;
 
 namespace MusicLibrary.ApiService.Features.Artist.GetAll;
 
@@ -16,7 +16,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="artistRepository">The artist repository dependency.</param>
+    /// <param name="artistsService">The artists service dependency.</param>
     /// <param name="logger">The logger instance.</param>
     public Endpoint(IArtistsService artistsService, ILogger<Endpoint> logger)
     {
