@@ -1,5 +1,7 @@
 using FastEndpoints;
-using MusicLibrary.Domain.Interfaces.Services;
+using MediatR;
+using MusicLibrary.Application.Abstractions.Services;
+using MusicLibrary.Application.Queries.Genres;
 namespace MusicLibrary.ApiService.Features.Genre.GetAll;
 
 /// <summary>
@@ -7,17 +9,23 @@ namespace MusicLibrary.ApiService.Features.Genre.GetAll;
 /// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly IGenreService _genreService;
+    /// <summary>
+    /// Mediator instance for sending queries and commands.
+    /// </summary>
+    private readonly IMediator _mediator;
+    /// <summary>
+    /// Logger instance for logging errors and information.
+    /// </summary>
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="genreService">The genre service dependency.</param>
+    /// <param name="mediator">The mediator dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IGenreService genreService, ILogger<Endpoint> logger)
+    public Endpoint(IMediator mediator, ILogger<Endpoint> logger)
     {
-        _genreService = genreService;
+        _mediator = mediator;
         _logger = logger;
     }
 
@@ -38,11 +46,11 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var genres = await _genreService.GetAllGenresAsync(ct);
+            var genres = await _mediator.Send(new GetAllGenressQuery(), ct);
 
             var response = new Response
             {
-                Genres = [.. genres]
+                Genres = genres
             };
 
             await Send.OkAsync(response, cancellation: ct);

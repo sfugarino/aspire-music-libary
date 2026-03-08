@@ -9,18 +9,10 @@ namespace MusicLibrary.Domain.Schemas;
 /// Represents an artist in the music library.
 /// </summary>
 [BsonIgnoreExtraElements]
-public class Artist
+public class Artist : Schema
 {
 
-    /// <summary>
-    /// Gets or sets the unique identifier for the artist.
-    /// </summary>
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
-
-
-    /// <summary>
+     /// <summary>
     /// Gets or sets the name of the artist.
     /// </summary>
     [BsonElement("name")]
@@ -65,26 +57,7 @@ public class Artist
     /// <summary>
     /// Gets the detailed genre information associated with the artist.
     /// </summary>
+    //[BsonIgnore]
     public IEnumerable<Genre> GenreDetails { get; set; } = [];
 
-
-    /// <summary>
-    /// Gets or sets the creation date of the artist record.
-    /// </summary>
-    [BsonElement("createdAt")]
-    public DateTime CreatedAt { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets the last update date of the artist record.
-    /// </summary>
-    [BsonElement("updatedAt")]
-    public DateTime UpdatedAt { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the artist is active.
-    /// </summary>
-    [BsonElement("isActive")]
-    public bool IsActive { get; set; } = true;
 }

@@ -8,17 +8,8 @@ namespace MusicLibrary.Domain.Schemas;
 /// <summary>
 /// Represents an album in the music library.
 /// </summary>
-public class Album
+public class Album : Schema
 {
-
-    /// <summary>
-    /// Gets or sets the unique identifier for the album.
-    /// </summary>
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
-
-
     /// <summary>
     /// Gets or sets the title of the album.
     /// </summary>
@@ -33,14 +24,7 @@ public class Album
     [BsonRepresentation(BsonType.ObjectId)]
     public List<string> Artists { get; set; } = []; // references Artist
     
-   /// <summary>
-    /// Gets or sets list of artist who appear on albumn
-    /// </summary>
-    [BsonElement("songs")]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public List<string> Songs { get; set; } = []; // rererenses Song
-
-    /// <summary>
+      /// <summary>
     /// Gets or sets the release year of the album.
     /// </summary>
     [BsonElement("releaseYear")]
@@ -54,6 +38,11 @@ public class Album
     [BsonRepresentation(BsonType.ObjectId)]
     public List<string> Genres { get; set; } = []; // references Genre
 
+    /// <summary>
+    /// Gets the detailed genre information associated with the artist.
+    /// </summary>
+    [BsonIgnore]
+    public IEnumerable<Genre> GenreDetails { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the cover image URL of the album.
@@ -68,24 +57,4 @@ public class Album
     [BsonElement("recordLabel")]
     public string? RecordLabel { get; set; }
 
-
-    /// <summary>
-    /// Gets or sets the creation date of the album record.
-    /// </summary>
-    [BsonElement("createdAt")]
-    public DateTime CreatedAt { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets the last update date of the album record.
-    /// </summary>
-    [BsonElement("updatedAt")]
-    public DateTime UpdatedAt { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the album is active.
-    /// </summary>
-    [BsonElement("isActive")]
-    public bool IsActive { get; set; } = true;
 }

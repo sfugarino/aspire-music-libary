@@ -1,5 +1,5 @@
 
-using MusicLibrary.Domain.Models;
+using MusicLibrary.Application.DTO;
 
 namespace MusicLibrary.ApiService.Features.Album.GetAll;
 
@@ -11,5 +11,5 @@ public class Response
     /// <summary>
     /// Gets or sets the list of albums returned by the endpoint.
     /// </summary>
-    public List<AlbumDto> Albums { get; set; } = new();
+    public AlbumDTO[] Albums { get; set; } = [];
 }

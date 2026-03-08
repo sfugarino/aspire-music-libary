@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using MusicLibrary.Domain.Models;
+using MusicLibrary.Application.DTO;
 
 namespace MusicLibrary.ApiService.Features.Artist.GetById;
 
@@ -11,5 +11,5 @@ public class Response
     /// <summary>
     /// Gets or sets the artist returned by the endpoint.
     /// </summary>
-    public ArtistDto Artists { get; set; } = new();
+    public ArtistDTO Artists { get; set; } = new();
 }

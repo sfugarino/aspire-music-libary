@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="FastEndpoints" Version="8.0.1" />
+      <PackageReference Include="MediatR" Version="14.1.0" />
       <PackageReference Include="MongoDB.Driver" Version="3.7.0" />
       <PackageReference Include="Scalar.AspNetCore" Version="2.13.0" />
     </ItemGroup>
@@ -15,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MusicLibrary.ServiceDefaults\MusicLibrary.ServiceDefaults.csproj" />
     <ProjectReference Include="..\MusicLibrary.Domain\MusicLibrary.Domain.csproj" />
+    <ProjectReference Include="..\MusicLibrary.Application\MusicLibrary.Application.csproj" />
     <ProjectReference Include="..\MusicLibrary.Infrastructure\MusicLibrary.Infrastructure.csproj" />
   </ItemGroup>
 

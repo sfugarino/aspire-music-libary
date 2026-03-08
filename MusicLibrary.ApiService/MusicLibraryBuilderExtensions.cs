@@ -1,11 +1,14 @@
 using FastEndpoints;
-using MongoDB.Driver;
-using MusicLibrary.ApiService.Config;
-using MusicLibrary.Infrastructure.Persistence.Repositories;
+using MusicLibrary.Infrastructure.Data.Repositories;
 using MusicLibrary.ApiService.Exceptions;
-using MusicLibrary.Domain.Interfaces.Persistence;
-using MusicLibrary.Domain.Interfaces.Services;
-using MusicLibrary.ApiService.Services;
+using MusicLibrary.Domain.Interfaces.Data.DbContexts;
+using MusicLibrary.Application.Abstractions.Services;
+using MusicLibrary.Application.Services;
+using MusicLibrary.Infrastructure.Data.DbContexts;
+using MusicLibrary.Domain.Interfaces.Data.Repositories;
+using MusicLibrary.Domain.Config;
+using MusicLibrary.Application.Abstractions.Messaging;
+using MusicLibrary.Application.Queries.Artists;
 
 
 namespace MusicLibrary.ApiService.Extensions;
@@ -35,13 +38,13 @@ public static class MusicLibraryBuilderExtensions
         // Add service defaults & Aspire client integrations
         builder.AddServiceDefaults();
 
-        // MongoDB configuration
-        var mongoDbSection = builder.Configuration.GetSection("MusicLibraryDatabase")!;
-        var mongoDbSettings = mongoDbSection.Get<DatabaseSettings>()!;
-        builder.Services.Configure<DatabaseSettings>(mongoDbSection);
-        var client = new MongoClient(mongoDbSettings.ConnectionString);
-        var database = client.GetDatabase(mongoDbSettings.DatabaseName);
-        builder.Services.AddSingleton<IMongoDatabase>(database);
+        // MongoDB configuration  
+        
+        var settings = builder.Configuration.GetSection("MusicLibraryDatabase").Get<DatabaseSettings>()
+            ?? throw new InvalidOperationException("Database settings are not configured properly.");
+
+         // Add MusicLibraryContext
+        builder.Services.AddSingleton<IMusicLibraryContext>(new MusicLibraryContext(settings));
 
         // Register repositories
         builder.Services.AddScoped<IGenreRepository, GenreRepository>();
@@ -57,6 +60,8 @@ public static class MusicLibraryBuilderExtensions
         // OpenAPI and FastEndpoints
         builder.Services.AddOpenApi();
         builder.Services.AddFastEndpoints();
+
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllArtistsQuery>());
 
         return builder;
     }

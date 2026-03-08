@@ -1,7 +1,9 @@
 using FastEndpoints;
-using MusicLibrary.Domain.Models;
-using MusicLibrary.Domain.Interfaces.Services;
+using MusicLibrary.Application.DTO;
+using MusicLibrary.Application.Abstractions.Services;
 using MusicLibrary.Domain.Schemas;
+using MediatR;
+using MusicLibrary.Application.Queries.Artists;
 
 namespace MusicLibrary.ApiService.Features.Artist.GetAll;
 
@@ -10,17 +12,17 @@ namespace MusicLibrary.ApiService.Features.Artist.GetAll;
 /// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly IArtistsService _artistsService;
+    private readonly IMediator _mediator;
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="artistsService">The artists service dependency.</param>
+    /// <param name="mediator">The mediator dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IArtistsService artistsService, ILogger<Endpoint> logger)
+    public Endpoint(IMediator mediator, ILogger<Endpoint> logger)
     {
-        _artistsService = artistsService;
+        _mediator = mediator;
         _logger = logger;
     }
 
@@ -41,7 +43,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var artists = await _artistsService.GetArtistsAsync(ct);
+            var artists = await _mediator.Send(new GetAllArtistsQuery(), ct);
             var response = new Response
             {
                 Artists = artists

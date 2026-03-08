@@ -1,5 +1,7 @@
 using FastEndpoints;
-using MusicLibrary.Domain.Interfaces.Services;
+using MediatR;
+using MusicLibrary.Application.Abstractions.Services;
+using MusicLibrary.Application.Queries.Songs;
 
 
 namespace MusicLibrary.ApiService.Features.Song.GetAll;
@@ -9,17 +11,23 @@ namespace MusicLibrary.ApiService.Features.Song.GetAll;
 /// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly ISongService _songService;
+    /// <summary>
+    /// Mediator instance for sending queries and commands.
+    /// </summary>
+    private readonly IMediator _mediator;
+    /// <summary>
+    /// Logger instance for logging errors and information. 
+    /// </summary>
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="songService">The song service dependency.</param>
+    /// <param name="mediator">The mediator dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(ISongService songService, ILogger<Endpoint> logger)
+    public Endpoint(IMediator mediator, ILogger<Endpoint> logger)
     {
-        _songService = songService;
+        _mediator = mediator;
         _logger = logger;
     }
 
@@ -40,11 +48,11 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var songs = await _songService.GetAllSongsAsync(ct);
+            var songs = await _mediator.Send(new GetAllSongsQuery(), ct);
 
             await Send.OkAsync(new Response
             {
-                Songs = [.. songs]
+                Songs = songs
             }, cancellation: ct);
         }
         catch (Exception ex)

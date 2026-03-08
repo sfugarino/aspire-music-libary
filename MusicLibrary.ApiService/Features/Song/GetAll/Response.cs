@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using MusicLibrary.Domain.Models;
+using MusicLibrary.Application.DTO;
 
 
 namespace MusicLibrary.ApiService.Features.Song.GetAll;
@@ -12,5 +12,5 @@ public class Response
     /// <summary>
     /// Gets or sets the list of songs returned by the endpoint.
     /// </summary>
-    public List<SongDto> Songs { get; set; } = new();
+    public SongDTO[] Songs { get; set; } = [];
 }

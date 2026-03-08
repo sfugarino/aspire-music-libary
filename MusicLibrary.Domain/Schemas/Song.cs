@@ -8,16 +8,8 @@ namespace MusicLibrary.Domain.Schemas;
 /// <summary>
 /// Represents a song in the music library.
 /// </summary>
-public class Song
+public class Song : Schema
 {
-
-    /// <summary>
-    /// Gets or sets the unique identifier for the song.
-    /// </summary>
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
-
 
     /// <summary>
     /// Gets or sets the title of the song.
@@ -33,7 +25,12 @@ public class Song
     [BsonRepresentation(BsonType.ObjectId)]
     public required List<string> Artists { get; set; } = []; // references Artist
     
-
+    /// <summary>
+    /// Gets or sets list of albums that the song appears on album
+    /// </summary>
+    [BsonElement("albums")]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public List<string> Albums { get; set; } = []; // references Album
 
     /// <summary>
     /// Gets or sets the duration of the song in seconds.
@@ -49,7 +46,11 @@ public class Song
     [BsonRepresentation(BsonType.ObjectId)]
     public List<string> Genres { get; set; } = []; // references Genre
 
-
+    /// <summary>
+    /// Gets the detailed genre information associated with the artist.
+    /// </summary>
+    [BsonIgnore]
+    public IEnumerable<Genre> GenreDetails { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the audio file URL of the song.
@@ -65,23 +66,4 @@ public class Song
     public string? Lyrics { get; set; }
 
 
-    /// <summary>
-    /// Gets or sets the creation date of the song record.
-    /// </summary>
-    [BsonElement("createdAt")]
-    public DateTime CreatedAt { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets the last update date of the song record.
-    /// </summary>
-    [BsonElement("updatedAt")]
-    public DateTime UpdatedAt { get; set; }
-
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the song is active.
-    /// </summary>
-    [BsonElement("isActive")]
-    public bool IsActive { get; set; } = true;
 }

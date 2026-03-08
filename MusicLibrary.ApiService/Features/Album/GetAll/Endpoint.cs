@@ -1,5 +1,6 @@
 using FastEndpoints;
-using MusicLibrary.Domain.Interfaces.Services;
+using MediatR;
+using MusicLibrary.Application.Queries.Albums;
 
 
 namespace MusicLibrary.ApiService.Features.Album.GetAll;
@@ -9,17 +10,17 @@ namespace MusicLibrary.ApiService.Features.Album.GetAll;
 /// </summary>
 public class Endpoint : EndpointWithoutRequest<Response>
 {
-    private readonly IAlbumService _albumService;
+    private readonly IMediator _mediator;
     private readonly ILogger<Endpoint> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="albumService">The album service dependency.</param>
+    /// <param name="mediator">The mediator dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IAlbumService albumService, ILogger<Endpoint> logger)
+    public Endpoint(IMediator mediator, ILogger<Endpoint> logger)
     {
-        _albumService = albumService;
+        _mediator = mediator;
         _logger = logger;
     }
 
@@ -40,10 +41,10 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         try
         {
-            var albums = await _albumService.GetAllAlbumsAsync(ct);
+            var albums = await _mediator.Send(new GetAllAlbumsQuery(), ct);
             var response = new Response
             {
-                Albums = [.. albums]
+                Albums = albums
             };
 
             await Send.OkAsync(response, cancellation: ct);

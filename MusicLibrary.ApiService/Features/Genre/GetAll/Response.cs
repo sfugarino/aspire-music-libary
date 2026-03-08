@@ -1,4 +1,5 @@
-using MusicLibrary.Domain.Models;
+using MusicLibrary.Application.DTO;
+using System.Collections.Generic;
 
 namespace MusicLibrary.ApiService.Features.Genre.GetAll;
 
@@ -10,5 +11,5 @@ public class Response
     /// <summary>
     /// Gets or sets the list of genres returned by the endpoint.
     /// </summary>
-    public List<GenreDto> Genres { get; set; } = [];
+    public GenreDTO[] Genres { get; set; } = [];
 }
