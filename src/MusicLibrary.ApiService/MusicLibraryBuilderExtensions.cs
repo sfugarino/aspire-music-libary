@@ -5,7 +5,7 @@ using MusicLibrary.Domain.Interfaces.Data.DbContexts;
 using MusicLibrary.Infrastructure.Data.DbContexts;
 using MusicLibrary.Domain.Interfaces.Data.Repositories;
 using MusicLibrary.Domain.Config;
-using MusicLibrary.Application.Abstractions.Messaging;
+using MusicLibrary.Application;
 using MusicLibrary.Application.Queries.Artists;
 
 
@@ -23,6 +23,8 @@ public static class MusicLibraryBuilderExtensions
     /// <returns>The same builder instance for chaining.</returns>
     public static WebApplicationBuilder ConfigureMusicLibrary(this WebApplicationBuilder builder)
     {
+        builder.Services.AddApplication();
+
         // Add ProblemDetails and exception handler
         builder.Services.AddProblemDetails(config =>
         {
@@ -53,8 +55,6 @@ public static class MusicLibraryBuilderExtensions
         // OpenAPI and FastEndpoints
         builder.Services.AddOpenApi();
         builder.Services.AddFastEndpoints();
-
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllArtistsQuery>());
 
         return builder;
     }

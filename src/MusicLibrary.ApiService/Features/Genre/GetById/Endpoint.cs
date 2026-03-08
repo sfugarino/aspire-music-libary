@@ -1,5 +1,6 @@
 using FastEndpoints;
-using MediatR;
+using MusicLibrary.Application.Abstractions.Messaging;
+using MusicLibrary.Application.DTO;
 using MusicLibrary.Application.Queries.Genres;
 
 namespace MusicLibrary.ApiService.Features.Genre.GetById;
@@ -12,7 +13,7 @@ public class Endpoint : Endpoint<Request, Response>
     /// <summary>
     /// Mediator instance for sending queries and commands.
     /// </summary>
-    private readonly IMediator _mediator;
+    private readonly IQueryHandler<GetGenreByIdQuery, GenreDTO?> _queryHandler;
     /// <summary>
     /// Logger instance for logging errors and information.
     /// </summary>
@@ -21,11 +22,11 @@ public class Endpoint : Endpoint<Request, Response>
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="mediator">The mediator dependency.</param>
+    /// <param name="queryHandler">The query handler dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IMediator mediator, ILogger<Endpoint> logger)
+    public Endpoint(IQueryHandler<GetGenreByIdQuery, GenreDTO?> queryHandler, ILogger<Endpoint> logger)
     {
-        _mediator = mediator;
+        _queryHandler = queryHandler;
         _logger = logger;
     }
 
@@ -47,7 +48,7 @@ public class Endpoint : Endpoint<Request, Response>
     {
         try
         {
-            var genre = await _mediator.Send(new GetGenreByIdQuery(request.Id), ct);
+            var genre = await _queryHandler.Handle(new GetGenreByIdQuery(request.Id), ct);
 
             if (genre == null)
             {

@@ -1,4 +1,3 @@
-using MediatR;
 using MusicLibrary.Application.Abstractions.Messaging;
 using MusicLibrary.Application.DTO;
 using MusicLibrary.Application.Query;

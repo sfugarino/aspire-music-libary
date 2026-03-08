@@ -1,5 +1,6 @@
 using FastEndpoints;
-using MediatR;
+using MusicLibrary.Application.Abstractions.Messaging;
+using MusicLibrary.Application.DTO;
 using MusicLibrary.Application.Queries.Songs;
 
 namespace MusicLibrary.ApiService.Features.Song.GetById;
@@ -12,7 +13,7 @@ public class Endpoint : Endpoint<Request, Response>
     /// <summary>
     /// Mediator instance for sending queries and commands.
     /// </summary>
-    private readonly IMediator _mediator;
+    private readonly IQueryHandler<GetSongByIdQuery, SongDTO?> _queryHandler;
     /// <summary>
     /// Logger instance for logging errors and information.
     /// </summary>
@@ -21,11 +22,11 @@ public class Endpoint : Endpoint<Request, Response>
     /// <summary>
     /// Initializes a new instance of the <see cref="Endpoint"/> class.
     /// </summary>
-    /// <param name="mediator">The mediator dependency.</param>
+    /// <param name="queryHandler">The query handler dependency.</param>
     /// <param name="logger">The logger instance.</param>
-    public Endpoint(IMediator mediator, ILogger<Endpoint> logger)
+    public Endpoint(IQueryHandler<GetSongByIdQuery, SongDTO?> queryHandler, ILogger<Endpoint> logger)
     {
-        _mediator = mediator;
+        _queryHandler = queryHandler;
         _logger = logger;
     }
 
@@ -47,7 +48,7 @@ public class Endpoint : Endpoint<Request, Response>
     {
         try
         {
-            var song = await _mediator.Send(new GetSongByIdQuery(request.Id), ct);
+            var song = await _queryHandler.Handle(new GetSongByIdQuery(request.Id), ct);
 
             if (song == null)
             {
