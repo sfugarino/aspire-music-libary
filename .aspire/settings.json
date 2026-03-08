@@ -1,3 +1,3 @@
 {
-    "appHostPath": "../MusicLibrary.AppHost/MusicLibrary.AppHost.csproj"
+    "appHostPath": "../src/MusicLibrary.AppHost/MusicLibrary.AppHost.csproj"
 }

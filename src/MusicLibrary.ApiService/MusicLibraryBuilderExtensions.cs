@@ -2,8 +2,6 @@ using FastEndpoints;
 using MusicLibrary.Infrastructure.Data.Repositories;
 using MusicLibrary.ApiService.Exceptions;
 using MusicLibrary.Domain.Interfaces.Data.DbContexts;
-using MusicLibrary.Application.Abstractions.Services;
-using MusicLibrary.Application.Services;
 using MusicLibrary.Infrastructure.Data.DbContexts;
 using MusicLibrary.Domain.Interfaces.Data.Repositories;
 using MusicLibrary.Domain.Config;
@@ -51,11 +49,6 @@ public static class MusicLibraryBuilderExtensions
         builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
         builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
         builder.Services.AddScoped<ISongRepository, SongRepository>();
-
-        builder.Services.AddScoped<IArtistsService, ArtistsService>();
-        builder.Services.AddScoped<IGenreService, GenreService>();
-        builder.Services.AddScoped<IAlbumService, AlbumService>();
-        builder.Services.AddScoped<ISongService, SongService>();
 
         // OpenAPI and FastEndpoints
         builder.Services.AddOpenApi();
