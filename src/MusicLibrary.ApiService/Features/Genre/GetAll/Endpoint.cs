@@ -1,6 +1,5 @@
 using FastEndpoints;
 using MediatR;
-using MusicLibrary.Application.Abstractions.Services;
 using MusicLibrary.Application.Queries.Genres;
 namespace MusicLibrary.ApiService.Features.Genre.GetAll;
 
