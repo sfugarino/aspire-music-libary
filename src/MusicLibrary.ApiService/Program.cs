@@ -4,7 +4,8 @@ using Scalar.AspNetCore;
 
 // Create the web application builder and configure all MusicLibrary services and settings
 var builder = WebApplication.CreateBuilder(args)
-    .ConfigureMusicLibrary();
+    .ConfigureMusicLibrary()
+    .AddOpenTelemetry();
 
 
 // Build the web application
@@ -30,6 +31,7 @@ if (app.Environment.IsDevelopment())
 // Map default endpoints (health checks, etc.)
 app.MapDefaultEndpoints();
 
+app.Map("/", () => Results.Redirect("/scalar/v1"));
 
 // Run the application
 app.Run();

@@ -7,6 +7,9 @@ using MusicLibrary.Domain.Interfaces.Data.Repositories;
 using MusicLibrary.Domain.Config;
 using MusicLibrary.Application;
 using MusicLibrary.Application.Queries.Artists;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 
 
 namespace MusicLibrary.ApiService.Extensions;
@@ -14,7 +17,7 @@ namespace MusicLibrary.ApiService.Extensions;
 /// <summary>
 /// Extension methods for configuring the WebApplicationBuilder for MusicLibrary.
 /// </summary>
-public static class MusicLibraryBuilderExtensions
+public static class BuilderExtensions
 {
     /// <summary>
     /// Configures all services and settings for the MusicLibrary API.
@@ -55,6 +58,49 @@ public static class MusicLibraryBuilderExtensions
         // OpenAPI and FastEndpoints
         builder.Services.AddOpenApi();
         builder.Services.AddFastEndpoints();
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddOpenTelemetry(this WebApplicationBuilder builder)
+    {
+        var tracingOtlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
+        var otel = builder.Services.AddOpenTelemetry();
+
+        // Configure OpenTelemetry Resources with the application name
+        otel.ConfigureResource(resource => resource
+            .AddService(serviceName: builder.Environment.ApplicationName));
+
+        // Add Metrics for ASP.NET Core and our custom metrics and export to Prometheus
+        otel.WithMetrics(metrics => metrics
+            // Metrics provider from OpenTelemetry
+            .AddAspNetCoreInstrumentation()
+            // Metrics provides by ASP.NET Core in .NET 8
+            .AddMeter("Microsoft.AspNetCore.Hosting")
+            .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
+            // Metrics provided by System.Net libraries
+            .AddMeter("System.Net.Http")
+            .AddMeter("System.Net.NameResolution")
+            .AddPrometheusExporter());
+
+   
+        otel.WithTracing(tracing =>
+        {
+            tracing.AddAspNetCoreInstrumentation();
+            tracing.AddHttpClientInstrumentation();
+            if (tracingOtlpEndpoint != null)
+            {
+                tracing.AddOtlpExporter(otlpOptions =>
+                {
+                    otlpOptions.Endpoint = new Uri(tracingOtlpEndpoint);
+                });
+            }
+            else
+            {
+                tracing.AddConsoleExporter();
+            }
+        });
+        
 
         return builder;
     }

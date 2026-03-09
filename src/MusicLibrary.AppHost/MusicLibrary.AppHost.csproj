@@ -5,6 +5,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <DebugType>portable</DebugType>
     <UserSecretsId>e652f2de-2dcd-4a36-91cc-051eaabd8ac6</UserSecretsId>
   </PropertyGroup>
 

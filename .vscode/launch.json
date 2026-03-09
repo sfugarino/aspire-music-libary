@@ -8,13 +8,19 @@
             "type": "aspire",
             "request": "launch",
             "name": "Aspire: Launch default apphost",
-            "program": "${workspaceFolder}"
-        },
-        {
-            "type": "aspire",
-            "request": "launch",
-            "name": "Aspire: Launch default apphost",
-            "program": "${workspaceFolder}"
+            "program": "${workspaceFolder}",
+            "debuggers": {
+                "searchNugetOrgSymbolServer": true,
+                "searchMicrosoftSymbolServer": true,
+                "symbolOptions": { 
+                    "searchMicrosoftSymbolServer": true,
+                    "searchNugetOrgSymbolServer": true
+                 }
+            }
         }
-    ]
+    ],
+    "symbolOptions": { 
+        "searchMicrosoftSymbolServer": true,
+        "searchNugetOrgSymbolServer": true
+    }
 }
