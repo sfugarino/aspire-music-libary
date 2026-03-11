@@ -30,7 +30,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
     public override void Configure()
     {
         Get("/api/artists");
-        AllowAnonymous();
+       // AllowAnonymous();
     }
 
     /// <summary>
@@ -39,6 +39,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
     /// <param name="ct">Cancellation token.</param>
     public override async Task HandleAsync(CancellationToken ct)
     {
+        
         try
         {
             var artists = await _queryHandler.Handle(new GetAllArtistsQuery(), ct);

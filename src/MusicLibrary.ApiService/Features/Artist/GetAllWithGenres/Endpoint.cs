@@ -33,7 +33,6 @@ public class Endpoint: EndpointWithoutRequest<Response>
     public override void Configure()
     {
         Get("/api/artists/with-genres");
-        AllowAnonymous();
     }
     
     /// <summary>

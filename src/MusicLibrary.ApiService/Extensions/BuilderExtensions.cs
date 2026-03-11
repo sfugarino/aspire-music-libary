@@ -1,4 +1,5 @@
 using FastEndpoints;
+using FastEndpoints.Swagger;
 using MusicLibrary.Infrastructure.Data.Repositories;
 using MusicLibrary.ApiService.Exceptions;
 using MusicLibrary.Domain.Interfaces.Data.DbContexts;
@@ -10,6 +11,11 @@ using MusicLibrary.Application.Queries.Artists;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson;
 
 
 namespace MusicLibrary.ApiService.Extensions;
@@ -24,19 +30,24 @@ public static class BuilderExtensions
     /// </summary>
     /// <param name="builder">The WebApplicationBuilder instance.</param>
     /// <returns>The same builder instance for chaining.</returns>
-    public static WebApplicationBuilder ConfigureMusicLibrary(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddApplication();
-
-        // Add ProblemDetails and exception handler
+             // Add ProblemDetails and exception handler
         builder.Services.AddProblemDetails(config =>
         {
-            config.CustomizeProblemDetails = content =>
+            config.CustomizeProblemDetails = context =>
             {
-                content.ProblemDetails.Extensions.TryAdd("requestId", content.HttpContext.TraceIdentifier);
+                context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+                Activity? activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+                context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
+
             };
         });
+
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+
+        builder.Services.RegisterQueryHandlers();
 
         // Add service defaults & Aspire client integrations
         builder.AddServiceDefaults();
@@ -57,7 +68,13 @@ public static class BuilderExtensions
 
         // OpenAPI and FastEndpoints
         builder.Services.AddOpenApi();
-        builder.Services.AddFastEndpoints();
+        builder.Services.AddFastEndpoints()
+                        .AddOpenApi(options =>
+                        {
+                           options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                        });
+
+        builder.Services.AddHttpClient();
 
         return builder;
     }
@@ -104,4 +121,66 @@ public static class BuilderExtensions
 
         return builder;
     }
+
+    public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder)
+    {
+        var keycloakSettings = builder.Configuration.GetSection("Keycloak").Get<KeycloakSettings>()
+            ?? throw new InvalidOperationException("Keycloak settings are not configured properly.");
+
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = keycloakSettings.BaseUrl,
+
+                ValidateAudience = true,
+                ValidAudience = "account",
+
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = false,
+
+                IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
+                {
+                    var client = new HttpClient();
+                    var keyUri = $"{parameters.ValidIssuer}/protocol/openid-connect/certs";
+                    var response = client.Send(new HttpRequestMessage(HttpMethod.Get, keyUri));
+
+                    using (Stream responseStream = response.Content.ReadAsStream())
+                    using (var streamReader = new StreamReader(responseStream))
+                    {
+                        var json =  streamReader.ReadToEnd();
+                        var keys = new JsonWebKeySet(json);
+                        return keys.GetSigningKeys();
+                    }  
+                }
+            };
+
+            options.RequireHttpsMetadata = false; // Only for develop
+            options.SaveToken = true;
+        });
+
+        builder.Services.AddAuthorization();
+
+        return builder;
+    }
+
+    private static async Task<IList<SecurityKey>> GetKeycloakSigningKeysAsync(string issuer)
+    {
+        using var httpClient = new HttpClient();
+        var keyUri = $"{issuer}/protocol/openid-connect/auth";
+        var response = await httpClient.GetAsync(keyUri);
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadAsStringAsync();
+        var keys = new JsonWebKeySet(json);
+        return keys.GetSigningKeys();
+    }
 }
+
+
+

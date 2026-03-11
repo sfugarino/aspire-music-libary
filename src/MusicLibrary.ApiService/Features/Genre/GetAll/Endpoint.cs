@@ -33,7 +33,6 @@ public class Endpoint : EndpointWithoutRequest<Response>
     public override void Configure()
     {
         Get("/api/genres");
-        AllowAnonymous();
     }
 
     /// <summary>

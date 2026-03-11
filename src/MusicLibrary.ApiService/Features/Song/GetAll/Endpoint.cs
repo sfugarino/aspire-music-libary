@@ -37,7 +37,6 @@ public class Endpoint : EndpointWithoutRequest<Response>
     public override void Configure()
     {
         Get("/api/songs");
-        AllowAnonymous();
     }
 
     /// <summary>

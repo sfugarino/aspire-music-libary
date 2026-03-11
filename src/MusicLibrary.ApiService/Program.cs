@@ -1,38 +1,17 @@
-using FastEndpoints;
 using MusicLibrary.ApiService.Extensions;
-using Scalar.AspNetCore;
+using MusicLibrary.Domain.Config;
 
 // Create the web application builder and configure all MusicLibrary services and settings
 var builder = WebApplication.CreateBuilder(args)
-    .ConfigureMusicLibrary()
+    .AddServices()
+    .ConfigureAuthentication()
     .AddOpenTelemetry();
-
 
 // Build the web application
 var app = builder.Build();
+        var settings = builder.Configuration.GetSection("Keycloak").Get<KeycloakSettings>()
+            ?? throw new InvalidOperationException("Application settings are not configured properly.");
 
-
-// Enable FastEndpoints middleware
-app.UseFastEndpoints();
-
-
-// Configure the HTTP request pipeline and global exception handler
-app.UseExceptionHandler();
-
-
-// Enable OpenAPI and Scalar API reference endpoints in development
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
-
-
-// Map default endpoints (health checks, etc.)
-app.MapDefaultEndpoints();
-
-app.Map("/", () => Results.Redirect("/scalar/v1"));
-
-// Run the application
-app.Run();
+app.Configure(settings)
+   .Run();
 

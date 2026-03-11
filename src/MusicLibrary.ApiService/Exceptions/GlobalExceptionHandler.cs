@@ -7,7 +7,7 @@ namespace MusicLibrary.ApiService.Exceptions;
 /// <summary>
 /// Handles global exceptions and writes problem details responses.
 /// </summary>
-internal sealed class GlobalExceptionHandler : IExceptionHandler
+public sealed class GlobalExceptionHandler : IExceptionHandler
 {
     private readonly IProblemDetailsService _problemDetailsService;
     private readonly ILogger<GlobalExceptionHandler> _logger;

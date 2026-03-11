@@ -31,7 +31,6 @@ public class Endpoint : EndpointWithoutRequest<Response>
     public override void Configure()
     {
         Get("/api/albums");
-        AllowAnonymous();
     }
 
     /// <summary>

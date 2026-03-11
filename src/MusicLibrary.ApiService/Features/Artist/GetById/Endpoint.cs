@@ -36,7 +36,6 @@ public class Endpoint : Endpoint<Request, Response>
     public override void Configure()
     {
         Get("/api/artists/{Id}");
-        AllowAnonymous();
     }
 
     /// <summary>
